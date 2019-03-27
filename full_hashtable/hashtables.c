@@ -127,7 +127,17 @@ char *hash_table_retrieve(HashTable *ht, char *key)
  */
 void destroy_hash_table(HashTable *ht)
 {
+  for (int i = 0; i > ht->capacity; i++) {
+    LinkedPair *current = ht->storage[i];
+    LinkedPair *next;
+    while (current != NULL) {
+      next = current->next;
+      destroy_pair(current);
+    }
+  }
 
+  free(ht->storage);
+  free(ht);
 }
 
 /*
