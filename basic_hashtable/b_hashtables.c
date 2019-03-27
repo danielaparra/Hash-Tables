@@ -72,7 +72,7 @@ BasicHashTable *create_hash_table(int capacity)
 {
   BasicHashTable *ht;
 
-  ht = malloc(sizeof(BasicHashTable);
+  ht = malloc(sizeof(BasicHashTable));
   ht->capacity = capacity;
   ht->storage = calloc(capacity, sizeof(Pair *));
 
@@ -106,7 +106,13 @@ void hash_table_insert(BasicHashTable *ht, char *key, char *value)
  ****/
 void hash_table_remove(BasicHashTable *ht, char *key)
 {
-
+  int index = hash(key, (ht->capacity - 1));
+  if (ht->storage[index] == NULL || strcmp(ht->storage[index]->key, key) != 0){
+    fprintf(stderr, "No value with key: %s\n", key);
+  } else {
+    destroy_pair(ht->storage[index]);
+    ht->storage[index] = NULL;
+  }
 }
 
 /****
@@ -116,7 +122,13 @@ void hash_table_remove(BasicHashTable *ht, char *key)
  ****/
 char *hash_table_retrieve(BasicHashTable *ht, char *key)
 {
-  return NULL;
+  int index = hash(key, (ht->capacity - 1));
+  if (ht->storage[index] == NULL || strcmp(ht->storage[index]->key, key) != 0) {
+    fprintf(stderr, "No value with key: %s\n", key);
+    return NULL;
+  } else {
+    return ht->storage[index]->value;
+  }
 }
 
 /****
