@@ -88,7 +88,15 @@ BasicHashTable *create_hash_table(int capacity)
  ****/
 void hash_table_insert(BasicHashTable *ht, char *key, char *value)
 {
-  
+  int index = hash(key, (ht->capacity - 1));
+
+  if (ht->storage[index] != NULL){
+    printf("Warning: You have overwritten \"%s\n\"", ht->storage[index]->value);
+    free(ht->storage[index]);
+  }
+
+  Pair *new = create_pair(key, value);
+  ht->storage[index] = new;
 }
 
 /****
