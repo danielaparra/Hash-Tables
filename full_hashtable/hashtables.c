@@ -91,7 +91,20 @@ HashTable *create_hash_table(int capacity)
  */
 void hash_table_insert(HashTable *ht, char *key, char *value)
 {
-
+  int index = hash(key, (ht->capacity - 1));
+  if (ht->storage[index] != NULL){
+    LinkedPair *current = ht->storage[index];
+    while (current != NULL) {
+      if (strcmp(current->key, key) == 0) {
+        current->value = value;
+        break;
+      } else if (current->next == NULL) {
+        LinkedPair *new = create_pair(key, value);
+        current->next = new;
+      }
+      current = current->next;
+    }
+  }
 }
 
 /*
@@ -133,6 +146,7 @@ void destroy_hash_table(HashTable *ht)
     while (current != NULL) {
       next = current->next;
       destroy_pair(current);
+      current = next;
     }
   }
 
