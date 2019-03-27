@@ -98,10 +98,13 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
       if (strcmp(current->key, key) == 0) {
         current->value = value;
         break;
-      } else if (current->next == NULL) {
+      }
+      
+      if (current->next == NULL) {
         LinkedPair *new = create_pair(key, value);
         current->next = new;
       }
+
       current = current->next;
     }
   } else {
@@ -133,7 +136,23 @@ void hash_table_remove(HashTable *ht, char *key)
  */
 char *hash_table_retrieve(HashTable *ht, char *key)
 {
-  return NULL;
+  int index = hash(key, (ht->capacity - 1));
+  if (ht->storage[index] != NULL) {
+    LinkedPair *current = ht->storage[index];
+    while (current != NULL) {
+      if (strcmp(current->key, key) == 0) {
+        return current->value;
+      } 
+      
+      if (current->next != NULL) {
+        return NULL;
+      }
+
+      current = current->next;
+    }
+  } else {
+    return ht->storage[index];
+  }
 }
 
 /*
