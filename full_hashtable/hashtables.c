@@ -92,7 +92,7 @@ HashTable *create_hash_table(int capacity)
 void hash_table_insert(HashTable *ht, char *key, char *value)
 {
   int index = hash(key, (ht->capacity - 1));
-  if (ht->storage[index] != NULL){
+  if (ht->storage[index] != NULL) {
     LinkedPair *current = ht->storage[index];
     while (current != NULL) {
       if (strcmp(current->key, key) == 0) {
@@ -104,6 +104,9 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
       }
       current = current->next;
     }
+  } else {
+    LinkedPair *new = create_pair(key, value);
+    ht->storage[index] = new;
   }
 }
 
