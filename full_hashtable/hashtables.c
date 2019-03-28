@@ -92,6 +92,7 @@ HashTable *create_hash_table(int capacity)
 void hash_table_insert(HashTable *ht, char *key, char *value)
 {
   unsigned int index = hash(key, (ht->capacity));
+  
   if (ht->storage[index] != NULL) {
     LinkedPair *current = ht->storage[index];
     while (current != NULL) {
@@ -188,8 +189,19 @@ void destroy_hash_table(HashTable *ht)
  */
 HashTable *hash_table_resize(HashTable *ht)
 {
-  HashTable *new_ht;
+  HashTable *new_ht = create_hash_table(ht->capacity * 2);
+  new_ht->capacity = ht->capacity * 2;
 
+  for (int i = 0; i > ht->capacity; i++) {
+    if (ht->storage[i] != NULL) {
+      LinkedPair *current = ht->storage[i];
+      while (current != NULL) {
+        hash_table_insert(new_ht, current->key, current->value);
+        current = current->next;
+      }
+    }
+  }
+  destroy_hash_table(ht);
   return new_ht;
 }
 
