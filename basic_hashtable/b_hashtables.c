@@ -88,11 +88,11 @@ BasicHashTable *create_hash_table(int capacity)
  ****/
 void hash_table_insert(BasicHashTable *ht, char *key, char *value)
 {
-  int index = hash(key, (ht->capacity - 1));
+  unsigned int index = hash(key, (ht->capacity));
 
   if (ht->storage[index] != NULL){
     printf("Warning: You have overwritten \"%s\n\"", ht->storage[index]->value);
-    free(ht->storage[index]);
+    destroy_pair(ht->storage[index]);
   }
 
   Pair *new = create_pair(key, value);
@@ -106,7 +106,7 @@ void hash_table_insert(BasicHashTable *ht, char *key, char *value)
  ****/
 void hash_table_remove(BasicHashTable *ht, char *key)
 {
-  int index = hash(key, (ht->capacity - 1));
+  unsigned int index = hash(key, (ht->capacity));
   if (ht->storage[index] == NULL || strcmp(ht->storage[index]->key, key) != 0){
     fprintf(stderr, "No value with key: %s\n", key);
   } else {
@@ -122,7 +122,7 @@ void hash_table_remove(BasicHashTable *ht, char *key)
  ****/
 char *hash_table_retrieve(BasicHashTable *ht, char *key)
 {
-  int index = hash(key, (ht->capacity - 1));
+  unsigned int index = hash(key, (ht->capacity));
   if (ht->storage[index] == NULL || strcmp(ht->storage[index]->key, key) != 0) {
     fprintf(stderr, "No value with key: %s\n", key);
     return NULL;

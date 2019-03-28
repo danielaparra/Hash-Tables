@@ -91,7 +91,7 @@ HashTable *create_hash_table(int capacity)
  */
 void hash_table_insert(HashTable *ht, char *key, char *value)
 {
-  int index = hash(key, (ht->capacity - 1));
+  unsigned int index = hash(key, (ht->capacity));
   if (ht->storage[index] != NULL) {
     LinkedPair *current = ht->storage[index];
     while (current != NULL) {
@@ -136,7 +136,7 @@ void hash_table_remove(HashTable *ht, char *key)
  */
 char *hash_table_retrieve(HashTable *ht, char *key)
 {
-  int index = hash(key, (ht->capacity - 1));
+  unsigned int index = hash(key, (ht->capacity));
   if (ht->storage[index] != NULL) {
     LinkedPair *current = ht->storage[index];
     while (current != NULL) {
@@ -145,12 +145,14 @@ char *hash_table_retrieve(HashTable *ht, char *key)
       } 
       
       if (current->next != NULL) {
+        fprintf(stderr, "Key not found: no value with key %s\n", key);
         return NULL;
       }
 
       current = current->next;
     }
   } else {
+    fprintf(stderr, "Key not found: no value with key %s\n", key);
     return ht->storage[index];
   }
 }
