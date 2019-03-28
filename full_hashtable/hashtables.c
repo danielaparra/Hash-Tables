@@ -111,6 +111,7 @@ void hash_table_insert(HashTable *ht, char *key, char *value)
   } else {
     LinkedPair *new = create_pair(key, value);
     ht->storage[index] = new;
+    //printf("%s, %s\n", ht->storage[index]->key, ht->storage[index]->value);
   }
 }
 
@@ -132,7 +133,7 @@ void hash_table_remove(HashTable *ht, char *key)
     while (current != NULL) {
       next = current->next;
       if (strcmp(current->key, key) == 0) {
-        destroy_pair(current);
+        //printf("%s, %s\n", current->key, current->value);
         if (previous == NULL) {
           ht->storage[index] = next;
           return;
@@ -140,6 +141,7 @@ void hash_table_remove(HashTable *ht, char *key)
           previous->next = next;
           return;
         }
+        destroy_pair(current);
       }
       previous = current;
       current = next;
@@ -165,10 +167,11 @@ char *hash_table_retrieve(HashTable *ht, char *key)
     LinkedPair *current = ht->storage[index];
     while (current != NULL) {
       if (strcmp(current->key, key) == 0) {
+        //printf("%s, %s\n", current->key, current->value);
         return current->value;
       } 
       
-      if (current->next != NULL) {
+      if (current->next == NULL) {
         fprintf(stderr, "Key not found: no value with key %s\n", key);
         return NULL;
       }
@@ -177,8 +180,9 @@ char *hash_table_retrieve(HashTable *ht, char *key)
     }
   } else {
     fprintf(stderr, "Key not found: no value with key %s\n", key);
-    return ht->storage[index];
+    return NULL;
   }
+  return NULL;
 }
 
 /*

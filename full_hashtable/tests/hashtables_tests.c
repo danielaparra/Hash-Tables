@@ -9,6 +9,7 @@ char *test_hash_table_insertion_and_retrieval()
     mu_assert(return_value == NULL, "Initialized value is not NULL");
 
     hash_table_insert(ht, "key-0", "val-0");
+    printf("%s\n", ht->storage);
     hash_table_insert(ht, "key-1", "val-1");
     hash_table_insert(ht, "key-2", "val-2");
     hash_table_insert(ht, "key-3", "val-3");
